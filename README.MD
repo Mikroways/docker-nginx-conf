@@ -1,4 +1,4 @@
-#Contenedor de nginx para wordpress
+#Contenedor de nginx para Wordpress
 
 Contenedor que extiende la imagen de nginx. Este tendra cargado un template el cual sera el archivo de configuracion base de un Wordpress.
 
