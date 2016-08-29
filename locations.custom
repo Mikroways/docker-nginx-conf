@@ -1,0 +1,33 @@
+  location ~ /.well-known {
+    allow all;
+  }
+
+  #location ~ /wp-(?:admin|login) {
+  #  return 301 https://$host$request_uri;
+  #}
+
+  location / {
+    try_files $uri $uri/ /index.php$uri?$args;
+  }
+
+  location ~* \.(ico|css|gif|jpe?g|png|js|ico|txt|xml)(\?[0-9]+)?$ {
+    access_log off;
+    log_not_found off;
+    expires max;
+    break ;
+  }
+
+  location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+  }
+
+  location ~ /\. {
+    deny all;
+  }
+
+  location ~* /(?:uploads|files)/.*\.php$ {
+    deny all;
+  }
+
