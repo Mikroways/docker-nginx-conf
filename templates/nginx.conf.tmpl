@@ -18,10 +18,12 @@ server {
     }    
 
 
-    {{range $dir := lsdir "/self/service/metadata/nginx/conf/custom_location"}}
-                location {{/self/service/metadata/nginx/conf/custom_location/$dir/value}} {
-                    index index.php
-                }
+    {{range gets "/self/service/metadata/nginx/conf/custom_location/*/*"}}
+        {{if exists "/self/service/metadata/nginx/conf/custom_location/*/*/value"}}
+            location {{getv "/self/service/metadata/nginx/conf/custom_location/*/*/value"}} {
+                index index.php index.html ;
+            }
+        {{end}}
     {{end}}
 
 
