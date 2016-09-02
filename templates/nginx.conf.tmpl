@@ -13,11 +13,15 @@ server {
 
     root {{$serverRoot}};
 
-    
+    location /laprueba {
+
+    }    
+
+
     {{range gets "/self/service/metadata/nginx/conf/custom_location/*"}}
-            location {{.Value}} {
-                
-            }
+            location {{getv "/self/service/metadata/nginx/conf/custom_location/.Key/value}} {
+            
+            {
     {{end}}
 
 
