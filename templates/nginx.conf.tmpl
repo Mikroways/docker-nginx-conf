@@ -13,7 +13,7 @@ server {
 
     root {{$serverRoot}};
 
-    {range gets "/self/service/metadata/nginx/conf/custom_location/*"}}
+    {{range gets "/self/service/metadata/nginx/conf/custom_location/*"}}
         location {{.}} {
             index index.php
         }
