@@ -19,7 +19,8 @@ server {
 
 
     {{range gets "/self/service/metadata/nginx/conf/custom_location/*"}}
-            location {{base .Key}}{{.Value}} {
+            location asdf {}
+            location {{.Key}} {
             
             {
     {{end}}
