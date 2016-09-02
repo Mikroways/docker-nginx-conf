@@ -6,4 +6,4 @@ VOLUME /etc/nginx/conf.d
 
 ENTRYPOINT ["/confd"]
 
-CMD []
+CMD ["--backend", "rancher", "--prefix", "/2015-07-25", "--log-level", "debug"]
