@@ -2,7 +2,8 @@
 {{$serverName := getvs "/self/service/metadata/nginx/conf/servername"}}
 {{$serverRoot := getv "/self/service/metadata/nginx/conf/serverroot"}}
 {{$index := getv "/self/service/metadata/nginx/conf/index"}}
-upstream {{$serverName}} {
+{{$upstreamName := getv "/self/service/metadata/nginx/conf/upstream"}}
+upstream {{$upstreamName}} {
    server 127.0.0.1:{{getv "/self/service/metadata/nginx/conf/upstream_port"}};
 }
 
