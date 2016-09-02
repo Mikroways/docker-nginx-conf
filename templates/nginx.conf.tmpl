@@ -1,13 +1,14 @@
-upstream {{getv "/self/service/metadata/nginx/conf/servername"}} {
+{{$serverPort := getv "/self/service/metadata/nginx/conf/serverport"}}
+{{$serverName := getv "/self/service/metadata/nginx/conf/servername"}}upstream {{$serverName}} {
    server 127.0.0.1:{{getv "/self/service/metadata/nginx/conf/upstream_port"}};
 }
 
 server {
-   listen 80;
-   server_name {{getv "/self/service/metadata/nginx/conf/servername"}};
+   listen {{$serverPort}};
+   server_name {{$serverName}};
 
 
    location / {
-      proxy_pass http://{{getv "/self/service/metadata/nginx/conf/servername"}};
+      proxy_pass http://{{$serverName}};
    }
 }
