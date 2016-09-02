@@ -1,5 +1,5 @@
 {{$serverPort := getv "/self/service/metadata/nginx/conf/serverport"}}
-{{$serverName := getvs "/self/service/metadata/nginx/conf/servername"}}
+{{$serverName := getv "/self/service/metadata/nginx/conf/servername"}}
 {{$serverRoot := getv "/self/service/metadata/nginx/conf/serverroot"}}
 {{$index := getv "/self/service/metadata/nginx/conf/index"}}
 {{$upstreamName := getv "/self/service/metadata/nginx/conf/upstream"}}
