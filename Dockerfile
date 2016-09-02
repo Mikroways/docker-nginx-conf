@@ -1,15 +1,9 @@
-FROM nginx
-MAINTAINER Geronimo Afonso "geronimo.afonso@mikroways.net"
+FROM rancher/confd-base:0.11.0-dev-rancher
 
-RUN apt-get update && apt-get install -y gettext-base && rm -rf /var/lib/apt/lists/*
+ADD ./conf.d /etc/confd/conf.d
+ADD ./templates /etc/confd/templates
+VOLUME /etc/nginx/conf.d
 
+ENTRYPOINT ["/confd"]
 
-COPY template-wordpress.conf /etc/nginx/conf.d/site-default
-COPY locations.custom /etc/nginx/conf.d/
-COPY fastcgi_params.custom /etc/nginx/conf.d/
-COPY config.sh /
-RUN chmod +x /config.sh
-ENTRYPOINT ["/config.sh"]
-
-CMD ["nginx","-g","daemon off;"]
-
+CMD []

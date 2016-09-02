@@ -1,0 +1,13 @@
+{{$serverName := getv "/self/service/metadata/nginx/conf/servername" "nginx"}}upstream {{$serverName}} {
+   server 127.0.0.1:{{getv "/self/service/metadata/nginx/conf/upstream_port" "3033"}};
+}
+
+server {
+   listen 80;
+   server_name {{$serverName}};
+
+
+   location / {
+      proxy_pass http://{{$serverName}};
+   }
+}
