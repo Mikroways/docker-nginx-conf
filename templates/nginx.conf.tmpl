@@ -13,15 +13,10 @@ server {
 
     root {{$serverRoot}};
 
-    {range gets "/self/service/metadata/nginx/conf/custom_location/*/*"}}
-        location /noentra{
-    
+    {range gets "/self/service/metadata/nginx/conf/custom_location/*"}}
+        location {{.}} {
+            index index.php
         }
-        {{if exists "/self/service/metadata/nginx/conf/custom_location/*/*/value"}}
-            location {{getv "/self/service/metadata/nginx/conf/custom_location/*/*/value"}} {
-                index index.php index.html ;
-            }
-        {{end}}
     {{end}}
     
 
