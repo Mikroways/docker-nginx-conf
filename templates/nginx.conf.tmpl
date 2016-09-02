@@ -14,8 +14,8 @@ server {
     root {{$serverRoot}};
 
     {{range getvs "/self/service/metadata/nginx/conf/custom_location/*"}}
-        location {{getv "/self/service/metadata/nginx/conf/custom_location/%s/value"}} {
-            {{range getvs "/self/service/metadata/nginx/conf/custom_location/%s/options/*"}}
+        location {{getv "/self/service/metadata/nginx/conf/custom_location/*/value"}} {
+            {{range getvs "/self/service/metadata/nginx/conf/custom_location/*/options/*"}}
                 {{.}};
             {{end}}
         }
