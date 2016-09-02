@@ -1,5 +1,5 @@
 [template]
-src="nginx.conf.tmpl"
+src="/etc/confd/templates/nginx.conf.tmpl"
 dest="/etc/nginx/conf.d/nginx.conf"
 keys = [
   "/self/service/metadata"
