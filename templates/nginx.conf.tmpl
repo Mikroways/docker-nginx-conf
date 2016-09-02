@@ -20,6 +20,6 @@ server {
     }
 
     location / {
-        proxy_pass http://{{$serverName}};
+        proxy_pass http://{{$upstreamName}};
     }
 }
