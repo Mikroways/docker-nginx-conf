@@ -1,14 +1,24 @@
 {{$serverPort := getv "/self/service/metadata/nginx/conf/serverport"}}
-{{$serverName := getv "/self/service/metadata/nginx/conf/servername"}}upstream {{$serverName}} {
+{{$serverName := getvs "/self/service/metadata/nginx/conf/servername"}}
+{{$serverRoot := getv "/self/service/metadata/nginx/conf/serverroot"}}
+{{$index := getv "/self/service/metadata/nginx/conf/index"}}
+upstream {{$serverName}} {
    server 127.0.0.1:{{getv "/self/service/metadata/nginx/conf/upstream_port"}};
 }
 
 server {
-   listen {{$serverPort}};
-   server_name {{$serverName}};
+    listen {{$serverPort}};
+    server_name {{join $serverName ","}};
 
+    root {{$serverRoot}};
 
-   location / {
-      proxy_pass http://{{$serverName}};
-   }
+    location {{getv "/self/service/metadata/nginx/conf/customlocation"}} {
+        {{range getvs "/self/services/metadata/nginx/conf/customlocation/options"}}
+            {{.}};
+        {{end}}
+    }
+
+    location / {
+        proxy_pass http://{{$serverName}};
+    }
 }
