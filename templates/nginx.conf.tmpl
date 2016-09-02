@@ -19,7 +19,7 @@ server {
 
 
     {{range gets "/self/service/metadata/nginx/conf/custom_location/*"}}
-            location {{getv "/self/service/metadata/nginx/conf/custom_location/.Key/value}} {
+            location {{base .Key}}{{.Value}} {
             
             {
     {{end}}
