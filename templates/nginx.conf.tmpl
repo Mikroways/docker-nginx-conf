@@ -13,7 +13,7 @@ server {
 
     root {{$serverRoot}};
 
-    {{if exists "/self/service/metadata/nginx/conf/custom_location"}}
+    {{if exists "/self/service/metadata/nginx/conf/index"}}
         location /existe_location {
 
         }
