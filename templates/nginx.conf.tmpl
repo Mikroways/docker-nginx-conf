@@ -14,7 +14,9 @@ server {
     root {{$serverRoot}};
 
     {{ range $dir := lsdir "/self/service/metadata/nginx/conf/custom_location" }}
-        index {{$dir}};
+        {{ range $subdir := lsdir "/self/services/metadata/nginx/conf/custom_location/$dir" }}
+            index {{$subdir}};
+        {{end}}
     {{end}}
     location /index.php {
         proxy_pass http://{{$upstreamName}};
