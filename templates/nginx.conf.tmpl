@@ -18,12 +18,6 @@ server {
             {{ $value_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{if exists $value_dir}}
             #es el optionssssssssssssss;
             {{end}}
-            {{ $value_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/value" $dir}}{{if exists $value_dir}}
-            location {{getv $value_dir}} 
-            {
-                index index.php; #Es el value;
-            }
-            {{end}}
             
             
         {{end}}
