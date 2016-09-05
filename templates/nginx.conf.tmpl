@@ -14,19 +14,15 @@ server {
     root {{$serverRoot}};
 
     {{ range $dir := lsdir "/self/service/metadata/nginx/conf/custom_location" }}
-        {{ $custom_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s" $dir}}
-        {{ range $subdir := getvs $custom_dir }}
+        {{ $custom_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s" $dir}}{{ range $subdir := getvs $custom_dir }}
             location {{$subdir}} {
+                index index.php;
+            }
 
+            location /prueba {
+                index index.html;
             }
         {{end}}
-        {{ range getvs $custom_dir }}
-            location {{.}} {
-
-            }
-        {{end}}
-
-        
     {{end}}
 
     location /index.php {
