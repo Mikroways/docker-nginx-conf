@@ -20,8 +20,12 @@ server {
             {
                 index index.php; #Es el value;
             }
-            {{else}}
-                #Es el option;
+            {{end}}
+            
+            {{ $option_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{ if exists $option_dir}}
+                {{range getvs $option_dir}}
+                    #UN option: {{.}};
+                {{end}}
             {{end}}
         {{end}}
     {{end}}
