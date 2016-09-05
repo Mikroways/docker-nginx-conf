@@ -15,13 +15,7 @@ server {
 
     {{ range $dir := lsdir "/self/service/metadata/nginx/conf/custom_location" }}
         {{ $custom_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s" $dir}}{{ range getvs $custom_dir }}
-            location {{.}} {
-                index index.php;
-            }
-
-            location /prueba {
-                index index.html;
-            }
+            {{.}};
         {{end}}
     {{end}}
 
