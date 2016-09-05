@@ -14,10 +14,10 @@ server {
     root {{$serverRoot}};
 
     {{ range $dir := lsdir "/self/service/metadata/nginx/conf/custom_location" }}
-    {{ $custom_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/*" $dir}}{{range gets $custom_dir}}
-    {{.}}
+        {{ $custom_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/*" $dir}}
+            {{$custo_dir}};
     {{end}}
-    {{end}}
+
     location /index.php {
         proxy_pass http://{{$upstreamName}};
     }
