@@ -20,6 +20,13 @@ server {
 
             }
         {{end}}
+        {{ range getvs $custom_dir }}
+            location {{.}} {
+
+            }
+        {{end}}
+
+        
     {{end}}
 
     location /index.php {
