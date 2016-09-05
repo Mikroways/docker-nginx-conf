@@ -15,7 +15,7 @@ server {
 
     {{ range $dir := lsdir "/self/service/metadata/nginx/conf/custom_location" }}
         {{ $custom_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s" $dir}}{{ range $options_dir := lsdir $custom_dir }}
-            {{$option_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{if exists $option_dir}}{{$opciones_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options/*" $dir}}{{range $value_option = getvs $opciones_dir}}
+            {{$option_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{if exists $option_dir}}{{$opciones_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options/*" $dir}}{{range $value_option := getvs $opciones_dir}}
             {{$value_option}};
             {{end}}{{end}}
                 
