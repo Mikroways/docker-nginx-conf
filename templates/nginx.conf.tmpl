@@ -13,13 +13,19 @@ server {
 
     root {{$serverRoot}};
 
+    {{if exists "/self/service/metadata/nginx/conf/custom_location"}}
+        location /existe_location {
+
+        }
+    {{end}}
+    
     {{range gets "/self/service/metadata/nginx/conf/custom_location/*"}}
         location {{.}} {
             index index.php
         }
     {{end}}
     
-
+    
     location /index.php {
         proxy_pass http://{{$upstreamName}};
     }
