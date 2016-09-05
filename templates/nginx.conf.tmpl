@@ -23,9 +23,7 @@ server {
             {{end}}
             
             {{ $option_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{ if exists $option_dir}}
-                {{range getvs $option_dir}}
-                    #UN option: {{.}};
-                {{end}}
+                #Entra al option;
             {{end}}
         {{end}}
     {{end}}
