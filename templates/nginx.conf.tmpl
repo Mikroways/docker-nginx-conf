@@ -22,9 +22,10 @@ server {
             }
             {{end}}
             
-            {{ $option_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{ if exists $option_dir}}
-                #Entra al option;
+            {{ $value_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{if exists $value_dir}}
+            #es el optionssssssssssssss;
             {{end}}
+            
         {{end}}
     {{end}}
 
