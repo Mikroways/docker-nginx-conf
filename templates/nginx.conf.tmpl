@@ -21,9 +21,7 @@ server {
                 index index.php; #Es el value;
             }
             {{else}}
-              {{ $path := printf "/self/service/metadata/nginx/conf/custom_location/%s/%s" $dir $options_dir}}{{range $val := getvs $path}}
-                {{$val}};
-              {{end}}
+                #Es el option;
             {{end}}
         {{end}}
     {{end}}
