@@ -23,6 +23,7 @@ server {
             }
             {{else}}
             #Aca irian las opciones....{{$value_dir}};
+                {{range getvs $value_dir}}{{.}}{{end}};
             {{end}}
             
             
