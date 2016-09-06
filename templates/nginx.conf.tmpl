@@ -10,27 +10,12 @@ upstream {{$upstreamName}} {
 server {
     listen {{$serverPort}};
     server_name {{$serverName}};
-
     root {{$serverRoot}};
 
-    {{ range $dir := lsdir "/self/service/metadata/nginx/conf/custom_location" }}
-        {{ $custom_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s" $dir}}{{ range $options_dir := lsdir $custom_dir }}
-       
-            {{$value_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/value" $dir}}
-            location {{getv $value_dir}}
-            {
-                index index.php; #Es el value;
-            
-            {{$directorio := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}
-            {{range $valor := ls $directorio }}
-            #{{$final := printf "/self/service/metadata/nginx/conf/custom_location/%s/options/%s" $dir $valor}}{{getv $final}}
-            {{end}}
-            }
-            
-        {{end}}
-    {{end}}
-
-    location /index.php {
-        proxy_pass http://{{$upstreamName}};
-    }
+    {{ range $dir := lsdir "/self/service/metadata/nginx/conf/custom_location" }}{{ $custom_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s" $dir}}{{ range $options_dir := lsdir $custom_dir }}
+       {{$value_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/value" $dir}}
+  location {{getv $value_dir}}
+  {
+    {{$directorio := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{range $valor := ls $directorio }}{{$final := printf "/self/service/metadata/nginx/conf/custom_location/%s/options/%s" $dir $valor}}{{getv $final}};{{end}}
+  }{{end}}{{end}}
 }
