@@ -1,6 +1,6 @@
 {{range $upstream := lsdir "/self/service/metadata/nginx/upstreams"}}
 upstream {{$server := printf "/self/service/metadata/nginx/upstreams/%s/upstream_name" $upstream}}{{getv $server}} {
-    server {{$upstream_name := printf "/self/service/metadata/nginx/upstreams/%s/upstream"}}{{getv $upstream_name}};
+    server {{$upstream_name := printf "/self/service/metadata/nginx/upstreams/%s/upstream" $upstream}}{{getv $upstream_name}};
 }
 {{end}}
 
