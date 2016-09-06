@@ -14,7 +14,7 @@ upstream {{$server := printf "/self/service/metadata/nginx/upstreams/%s/upstream
 
 {{range $servers := lsdir "/self/service/metadata/nginx/servers"}}
 server {  #empieza un server  
-  {{$conf_server := printf "/self/service/metadata/nginx/servers/%s/custom_conf" $servers}}{{range getvs $conf_servers}}
+  {{$conf_server := printf "/self/service/metadata/nginx/servers/%s/custom_conf" $servers}}{{range getvs $conf_server}}
     {{.}};
   {{end}}
 } #termina un server
