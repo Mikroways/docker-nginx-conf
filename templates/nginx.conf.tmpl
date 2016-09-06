@@ -16,6 +16,7 @@ server {
        {{$value_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/value" $dir}}
   location {{getv $value_dir}}
   {
-    {{$directorio := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{range $valor := ls $directorio }}{{$final := printf "/self/service/metadata/nginx/conf/custom_location/%s/options/%s" $dir $valor}}{{getv $final}};{{end}}
+    {{$directorio := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{range $valor := ls $directorio }}{{$final := printf "/self/service/metadata/nginx/conf/custom_location/%s/options/%s" $dir $valor}}{{getv $final}};
+{{end}}
   }{{end}}{{end}}
 }
