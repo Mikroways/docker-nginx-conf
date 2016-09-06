@@ -25,6 +25,7 @@ server {
             
             {{$option_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{if exists $option_dir}}
                 {{range $options_val_dir := lsdir $option_dir }}
+                    #{{$options_val_dir}};
                     {{$val_option := printf "/self/service/metadata/nginx/conf/custom_location/%s/options/%s" $dir $options_val_dir}}
                     {{getv $val_option}};
                 {{end}}
