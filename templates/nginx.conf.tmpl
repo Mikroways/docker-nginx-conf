@@ -23,8 +23,9 @@ server {
             }
             {{else}}
             #Aca irian las opciones....{{$value_dir}};
-                {{range getvs $value_dir}}
-                    #{{.}}
+                {{$directorio := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}
+                {{range $valor := ls $directorio }}
+                    #{{$final := printf "/self/service/metadata/nginx/conf/custom_location/%s/options/%s" $dir $valor}}{{getv $valor}}
                 {{end}}
             {{end}}
             
