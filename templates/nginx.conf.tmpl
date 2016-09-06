@@ -1,20 +1,20 @@
 {{range $upstream := lsdir "/self/service/metadata/nginx/upstreams"}}
 upstream {{$server := printf "/self/service/metadata/nginx/upstreams/%s/upstream_name" $upstream}}{{getv $server}} {
-    server {{$upstream_name := printf "/self/service/metadata/nginx/upstreams/%s/upstream" $upstream}}{{getv $upstream_name}};
+    server {{$upstream_name := printf "/self/service/metadata/nginx/upstreams/%s/upstream" $upstream}}{{getv $upstream_name}}
 }
 {{end}}
 
 
 {{range $servers := lsdir "/self/service/metadata/nginx/servers"}}
 server {  #empieza un server  
-  {{$conf_server := printf "/self/service/metadata/nginx/servers/%s/custom_conf/*" $servers}}{{range getvs $conf_server}}{{.}};
+  {{$conf_server := printf "/self/service/metadata/nginx/servers/%s/custom_conf/*" $servers}}{{range getvs $conf_server}}{{.}}
   {{end}}
 
   {{$custom_server := printf "/self/service/metadata/nginx/servers/%s/custom_location" $servers}}{{range $dir := lsdir $custom_server}}{{$custom_dir := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s" $servers $dir}}{{range $options_dir := lsdir $custom_dir}}
   {{$value_dir := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s/value" $servers $dir}}
   location {{getv $value_dir}}
   {
-    {{$dir_option := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s/options" $servers $dir}}{{range $value_dir := ls $dir_option}}{{$fin_option := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s/options/%s" $servers $dir $value_dir}}{{getv $fin_option}};
+    {{$dir_option := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s/options" $servers $dir}}{{range $value_dir := ls $dir_option}}{{$fin_option := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s/options/%s" $servers $dir $value_dir}}{{getv $fin_option}}
     {{end}}
   }{{end}}{{end}}
 
