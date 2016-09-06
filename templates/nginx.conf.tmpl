@@ -22,7 +22,7 @@ server {
                 index index.php; #Es el value;
             }
             {{end}}
-            
+            {{getv "/self/service/metadata/nginx/conf/custom_location/locations1/options/option-a"}};
             {{$option_dir := printf "/self/service/metadata/nginx/conf/custom_location/%s/options" $dir}}{{if exists $option_dir}}
                 {{range $options_val_dir := lsdir $option_dir }}
                     #{{$options_val_dir}};
