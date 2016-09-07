@@ -3,8 +3,8 @@ Esta imagen comienza un contenedor basado en https://github.com/rancher/catalog-
 archivo de configuracion de nginx a partir de metadatos de Rancher.
 
 ## Como funciona
-Este contenedor toma metadatos definidos en Rancher. Para esto se tiene definido dentro de la carpeta conf.d un archivo en donde se define: que template leera confd, donde almacenara el archivo generado y un conjunto de claves. 
-El template mediante el cual generara el archivo de configuración en templates/nginx.conf.tmpl
+Este contenedor toma metadatos definidos en Rancher. Para esto se tiene definido dentro de la carpeta conf.d un archivo en donde se define: que template leera confd, donde almacenara el archivo generado y un conjunto de claves. https://github.com/Mikroways/docker-wordpress-nginx/blob/master/conf.d/nginx.toml 
+El template mediante el cual generara el archivo de configuración en templates/nginx.conf.tmpl. https://github.com/Mikroways/docker-wordpress-nginx/blob/master/templates/nginx.conf.tmpl
 
 
 Los metadatos en Rancher deben ser definidos de la siguiente manera, ejemplo de rancher-compose.yml:
