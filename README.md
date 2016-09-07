@@ -7,7 +7,7 @@ Este contenedor toma metadatos definidos en Rancher. Para esto se tiene definido
 El template mediante el cual generara el archivo de configuración en templates/nginx.conf.tmpl
 
 
-Los metadatos en Rancher deben ser definidos de la siguiente manera:
+Los metadatos en Rancher deben ser definidos de la siguiente manera, ejemplo de rancher-compose.yml:
 
 ```yml
 nginx:
@@ -36,11 +36,14 @@ Los campos que es posible editar son los siguientes:
 * port: campo que indica el puerto del server
 * server_custom_options: en este campo se pueden definir diferentes configuraciones que se deseen agregar.
 * root_location_options: este campo agregara, si es que se define, dentro de "location /" las opciones indicadas
+```yml
     location / {
         try_files $uri @app;
         <<<contenido de root_location_options>>>
     }
+```
 * upstream_location_options: del mismo modo que root_location_options, dentro de "location @app" se agregaran otras opciones a las ya definidas
+```yml
   location @app {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -48,4 +51,8 @@ Los campos que es posible editar son los siguientes:
     proxy_pass http://app;
     <<<contenido de upstream_location_options>>>
   }
-* static_files_regexp_location: campo para editar la expresion regular que sirve el contenido estatico. Por defecto "location ~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?$"
+```
+* static_files_regexp_location: campo para editar la expresion regular que sirve el contenido estatico. Por defecto:
+```yml
+location ~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?$
+```
