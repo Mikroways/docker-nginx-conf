@@ -1,24 +1,33 @@
-{{range $upstream := lsdir "/self/service/metadata/nginx/upstreams"}}
-upstream {{$server := printf "/self/service/metadata/nginx/upstreams/%s/upstream_name" $upstream}}{{getv $server}} {
-    server {{$upstream_name := printf "/self/service/metadata/nginx/upstreams/%s/upstream" $upstream}}{{getv $upstream_name}};
+upstream app {
+  server 127.0.0.1:{{getv "/services/nginx/metadata/nginx-conf/upstream/port"}}; #custom port
 }
-{{end}}
+server {
+  server_name _;
+  {{if exists "/services/nginx/metadata/nginx-conf/root"}}root {{getv "/services/nginx/metadata/nginx-conf/root"}}{{else}}root /usr/share/nginx/html;{{end}}
 
+  access_log /var/log/nginx/access.log;
+  error_log  /var/log/nginx/error.log;
+  
+  {{if exists "/services/nginx/metadata/nginx-conf/server_custom_options"}}{{getv "/services/nginx/metadata/nginx-conf/server_custom_options"}}{{end}}
 
-{{range $servers := lsdir "/self/service/metadata/nginx/servers"}}
-server {  #empieza un server  
-  {{$conf_server := printf "/self/service/metadata/nginx/servers/%s/custom_conf/*" $servers}}{{range getvs $conf_server}}{{.}}
-  {{end}}
+  location / {
+    try_files $uri @app;
+    {{if exists "/services/nginx/metadata/nginx-conf/root_location_options"}}{{getv "/services/nginx/metadata/nginx-conf/root_location_options"}}{{end}}
+  }
 
-  {{$custom_server := printf "/self/service/metadata/nginx/servers/%s/custom_location" $servers}}{{range $dir := lsdir $custom_server}}{{$custom_dir := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s" $servers $dir}}{{range $options_dir := lsdir $custom_dir}}
-  {{$value_dir := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s/value" $servers $dir}}
-  location {{getv $value_dir}}
-  {
-    {{$dir_option := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s/options" $servers $dir}}{{range $value_dir := ls $dir_option}}{{$fin_option := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s/options/%s" $servers $dir $value_dir}}{{getv $fin_option}}
-    {{end}}
-  }{{end}}{{end}}
-
-} #termina un serveri
-
-
-{{end}}
+  location @app {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_pass http://app;
+    {{if exists "/services/nginx/metadata/nginx-conf/upstream_location_options"}}{{getv "/services/nginx/metadata/nginx-conf/upstream_location_options"}}{{end}}
+  }
+  
+  location {{if exists "/services/nginx/metadata/nginx-conf/static_files_regexp_location"}}{{getv "/services/nginx/metadata/nginx-conf/static_files_regexp_location"}}{{else}}~* \.(icooooooooooooooooo|css|gif|jpe?g|png|js)(\?[0-9]+)?${{end}} {
+    try_files $uri @app;
+    access_log off;
+    log_not_found off;
+    expires max;
+    break ;
+  }
+}
