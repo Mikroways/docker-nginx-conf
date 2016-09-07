@@ -31,7 +31,7 @@ nginx:
 ```
 
 Los campos a partir de metadata son los que nos importan.
-Los campos que es posible editar son los siguientes:
+Los campos que posibles de editar son los siguientes:
 * root: campo que indica el document root de nginx. Campo opcional, por defecto /usr/share/nginx/html
 * port: campo que indica el puerto del server
 * server_custom_options: en este campo se pueden definir diferentes configuraciones que se deseen agregar.
