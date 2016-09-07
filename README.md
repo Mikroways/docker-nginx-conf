@@ -56,3 +56,12 @@ Los campos posibles de editar son los siguientes:
 ```yml
 location ~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?$
 ```
+
+## Correr nginx-conf
+Ejemplo con docker-compose y rancher-compose
+
+
+
+```yml
+
+```
