@@ -7,9 +7,11 @@ upstream {{$server := printf "/self/service/metadata/nginx/upstreams/%s/upstream
 
 {{range $servers := lsdir "/self/service/metadata/nginx/servers"}}
 server {  #empieza un server
+    
+  {{$conf_server := printf "/self/service/metadata/nginx/servers/%s/custom_conf" $servers}}{{range getvs $conf_server}}{{.}}
   {{range $key_conf := ls $conf_server}}
-    {{$value_conf := printf "/self/service/metadata/nginx/servers/%s/custom_conf/%s" $servers $key_conf}}{{$key_conf}}:{{getv $value_conf}} 
-  {{end}}
+    {{$value_conf := printf "/self/service/metadata/nginx/servers/%s/custom_conf/%s" $servers $key_conf}}{{$key_conf}} {{getv $value_conf}}
+  {{end}}{{end}}
 
   {{$custom_server := printf "/self/service/metadata/nginx/servers/%s/custom_location" $servers}}{{range $dir := lsdir $custom_server}}{{$custom_dir := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s" $servers $dir}}{{range $options_dir := lsdir $custom_dir}}
   {{$value_dir := printf "/self/service/metadata/nginx/servers/%s/custom_location/%s/value" $servers $dir}}
