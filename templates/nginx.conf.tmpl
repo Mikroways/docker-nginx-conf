@@ -1,5 +1,5 @@
 upstream app {
-  server {{getv "/services/nginx/metadata/nginx-conf/upstream/port"}}; #custom port
+  server 127.0.0.1:{{getv "/services/nginx/metadata/nginx-conf/upstream/port"}}; #custom port
 }
 server {
   server_name _;
