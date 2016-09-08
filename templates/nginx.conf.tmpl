@@ -11,7 +11,7 @@ server {
   {{if exists "/services/nginx/metadata/nginx-conf/server_custom_options"}}{{getv "/services/nginx/metadata/nginx-conf/server_custom_options"}}{{end}}
 
   location / {
-    try_files $uri @app;
+    #try_files $uri @app;
     {{if exists "/services/nginx/metadata/nginx-conf/root_location_options"}}{{getv "/services/nginx/metadata/nginx-conf/root_location_options"}}{{end}}
   }
 
