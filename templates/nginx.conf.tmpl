@@ -15,13 +15,13 @@ server {
     {{if exists "/services/nginx/metadata/nginx-conf/root_location_options"}}{{getv "/services/nginx/metadata/nginx-conf/root_location_options"}}{{end}}
   }
 
-  location @app {
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header Host $http_host;
-    proxy_redirect off;
-    proxy_pass http://app;
-    {{if exists "/services/nginx/metadata/nginx-conf/upstream_location_options"}}{{getv "/services/nginx/metadata/nginx-conf/upstream_location_options"}}{{end}}
-  }
+  #location @app {
+  #  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  #  proxy_set_header Host $http_host;
+  #  proxy_redirect off;
+  #  proxy_pass http://app;
+  #  {{if exists "/services/nginx/metadata/nginx-conf/upstream_location_options"}}{{getv "/services/nginx/metadata/nginx-conf/upstream_location_options"}}{{end}}
+  #}
   
   location {{if exists "/services/nginx/metadata/nginx-conf/static_files_regexp_location"}}{{getv "/services/nginx/metadata/nginx-conf/static_files_regexp_location"}}{{else}}~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?${{end}} {
     try_files $uri @app;
