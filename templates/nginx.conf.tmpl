@@ -30,7 +30,7 @@ server {
  
   location {{if exists "/services/nginx/metadata/nginx-conf/static_files_regexp_location"}}{{getv "/services/nginx/metadata/nginx-conf/static_files_regexp_location"}}{{else}}~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?${{end}} {
     #try_files $uri @app; #En lugar de @app
-    #try_files $uri $uri/;
+    try_files $uri $uri/;
     access_log off;
     log_not_found off;
     expires max;
