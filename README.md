@@ -42,7 +42,7 @@ Los campos posibles de editar son los siguientes:
         <<<contenido de root_location_options>>>
     }
 ```
-* upstream_location_options: del mismo modo que root_location_options, dentro de "location @app" se agregaran otras opciones a las ya definidas
+* upstream_location_options: este campo define "location @app", se agregaran otras opciones a las ya definidas. Si este campo no es especificado no se creara este location y tampoco se creara "upstream @app {}"
 ```yml
   location @app {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -57,11 +57,3 @@ Los campos posibles de editar son los siguientes:
 location ~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?$
 ```
 
-## Correr nginx-conf
-Ejemplo con docker-compose y rancher-compose
-
-
-
-```yml
-
-```
