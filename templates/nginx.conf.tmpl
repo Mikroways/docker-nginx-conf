@@ -28,7 +28,7 @@ server {
     fastcgi_index index.php;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     fastcgi_param SERVER_PORT $http_x_forwarded_port;
-    fastcgi_pass 127.0.0.1:{{if exists "/services/nginx/metadata/nginx-conf/fpm_options/port"}}{{getv "/services/nginx/metadata/nginx-conf/fpm_options/port}}{{else}}{{9000}}{{end}};
+    fastcgi_pass 127.0.0.1:{{if exists "/services/nginx/metadata/nginx-conf/fpm_options/port"}}{{getv "/services/nginx/metadata/nginx-conf/fpm_options/port"}}{{else}}{{9000}}{{end}};
     {{getv "/services/nginx/metadata/nginx-conf/fpm_options/options"}}
   {{end}}
 
