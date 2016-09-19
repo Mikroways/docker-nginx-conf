@@ -1,6 +1,6 @@
 {{if exists "/services/nginx/metadata/nginx-conf/upstream_location_options"}}
 upstream app {
-  server 127.0.0.1:{{if exists "/services/nginx/metadata/nginx-conf/upstream/port"}}{{getv "/services/nginx/metadata/nginx-conf/upstream/port"}}{{else}}8080{{end}};
+  server {{if exists "/services/nginx/metadata/nginx-conf/server"}}{{getv "/services/nginx/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/services/nginx/metadata/nginx-conf/upstream/port"}}{{getv "/services/nginx/metadata/nginx-conf/upstream/port"}}{{else}}8080{{end}};
 }
 {{end}}
 
@@ -28,7 +28,7 @@ server {
     fastcgi_index index.php;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     fastcgi_param SERVER_PORT $http_x_forwarded_port;
-    fastcgi_pass 127.0.0.1:{{if exists "/services/nginx/metadata/nginx-conf/fpm_options/port"}}{{getv "/services/nginx/metadata/nginx-conf/fpm_options/port"}}{{else}}{{9000}}{{end}};
+    fastcgi_pass {{if exists "/services/nginx/metadata/nginx-conf/server"}}{{getv "/services/nginx/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/services/nginx/metadata/nginx-conf/fpm_options/port"}}{{getv "/services/nginx/metadata/nginx-conf/fpm_options/port"}}{{else}}{{9000}}{{end}};
     {{getv "/services/nginx/metadata/nginx-conf/fpm_options/options"}}
   {{end}}
 
