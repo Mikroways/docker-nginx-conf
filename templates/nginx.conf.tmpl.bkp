@@ -1,0 +1,52 @@
+{{if exists "/services/nginx/metadata/nginx-conf/upstream_location_options"}}
+upstream app {
+  server {{if exists "/services/nginx/metadata/nginx-conf/server"}}{{getv "/services/nginx/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/services/nginx/metadata/nginx-conf/upstream/port"}}{{getv "/services/nginx/metadata/nginx-conf/upstream/port"}}{{else}}8080{{end}};
+}
+{{end}}
+
+server {
+  server_name _;
+  {{if exists "/services/nginx/metadata/nginx-conf/root"}}root {{getv "/services/nginx/metadata/nginx-conf/root"}}{{else}}root /usr/share/nginx/html;{{end}}
+
+  access_log /var/log/nginx/access.log;
+  error_log  /var/log/nginx/error.log;
+  
+  {{if exists "/services/nginx/metadata/nginx-conf/server_custom_options"}}{{getv "/services/nginx/metadata/nginx-conf/server_custom_options"}}{{end}}
+
+  location / {
+    {{if exists "/services/nginx/metadata/nginx-conf/root_location_options"}}{{getv "/services/nginx/metadata/nginx-conf/root_location_options"}}{{else}}try_files $uri{{if exists "/services/nginx/metadata/nginx-conf/upstream_location_options"}} @app{{end}};{{end}}
+    
+  }
+
+  {{if exists "/services/nginx/metadata/nginx-conf/fpm_options"}}
+  location ~ [^/]\.php(/|$) {
+    fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+    if (!-f $document_root$fastcgi_script_name) {
+      return 404;
+    }
+    include fastcgi_params;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param SERVER_PORT $http_x_forwarded_port;
+    fastcgi_pass {{if exists "/services/nginx/metadata/nginx-conf/server"}}{{getv "/services/nginx/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/services/nginx/metadata/nginx-conf/fpm_options/port"}}{{getv "/services/nginx/metadata/nginx-conf/fpm_options/port"}}{{else}}{{9000}}{{end}};
+    {{getv "/services/nginx/metadata/nginx-conf/fpm_options/options"}}
+  {{end}}
+
+{{if exists "/services/nginx/metadata/nginx-conf/upstream_location_options"}}
+  location @app {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_pass http://app;
+    {{getv "/services/nginx/metadata/nginx-conf/upstream_location_options"}}
+  }
+{{end}}
+ 
+  location {{if exists "/services/nginx/metadata/nginx-conf/static_files_regexp_location"}}{{getv "/services/nginx/metadata/nginx-conf/static_files_regexp_location"}}{{else}}~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?${{end}} {
+    try_files $uri{{if exists "/services/nginx/metadata/nginx-conf/upstream_location_options"}} @app{{end}};
+    access_log off;
+    log_not_found off;
+    expires max;
+    break ;
+  }
+}
