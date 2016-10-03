@@ -43,7 +43,8 @@ server {
 {{end}}
  
   location {{if exists "/self/service/metadata/nginx-conf/static_files_regexp_location"}}{{getv "/self/service/metadata/nginx-conf/static_files_regexp_location"}}{{else}}~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?${{end}} {
-    try_files $uri{{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}} @app{{end}};
+    #try_files $uri
+    {{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}}try_files $uri @app;{{end}}
     access_log off;
     log_not_found off;
     expires max;
