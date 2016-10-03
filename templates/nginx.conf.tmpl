@@ -1,4 +1,3 @@
-{{$nginx := getenv "NGINX"}}
 #Metadata debe ser definida en el contenedor nginx-conf
 {{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}}
 upstream app {
