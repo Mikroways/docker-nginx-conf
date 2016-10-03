@@ -28,7 +28,6 @@ nginx:
       upstream_location_options: |
       static_files_regexp_location: \\.(icoco|css|gif|jpe?g|png|js)(\?[0-9]+)$$
 ```
-
 Los campos a partir de metadata son los que nos importan.
 Los campos posibles de editar son los siguientes:
 * root: campo que indica el document root de nginx. Campo opcional, por defecto /usr/share/nginx/html
@@ -63,6 +62,10 @@ Los campos posibles de editar son los siguientes:
 ```yml
 location ~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?$
 ```
+* fpm_options: este campo define "location ~ [^/]\.php(/|$)".Si este campo no es especificado no se creara este location"
+Dentro de esta se pueden definir otras dos opciones:
+** options: se agregan opciones a las ya definidas por defecto
+** port: puerto fpm
 
 ## Ejemplo de uso
 
