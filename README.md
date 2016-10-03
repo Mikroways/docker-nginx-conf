@@ -68,20 +68,30 @@ Dentro de esta se pueden definir otras dos opciones:
   * port: puerto fpm
 contendido de fpm_options por defecto:
 ```yml
-{{if exists "/self/service/metadata/nginx-conf/fpm_options"}}
-  location ~ [^/]\.php(/|$) {
-    fastcgi_split_path_info ^(.+?\.php)(/.*)$;
-    if (!-f $document_root$fastcgi_script_name) {
-      return 404;
-    }
-    include fastcgi_params;
-    fastcgi_index index.php;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    fastcgi_param SERVER_PORT $http_x_forwarded_port;
-    fastcgi_pass {{if exists "/self/service/metadata/nginx-conf/server"}}{{getv "/self/service/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/self/service/metadata/nginx-conf/fpm_options/port"}}{{getv "/self/service/metadata/nginx-conf/fpm_options/port"}}{{else}}{{9000}}{{end}};
-    {{getv "/self/service/metadata/nginx-conf/fpm_options/options"}}
-  {{end}}
-```
+metadata:
+    nginx-conf:
+      root: /var/www/html;    
+      server_custom_options: |
+        listen 8060;
+        keepalive_timeout 10;
+        client_max_body_size 250m;
+        index index.php;
+        location ~ /.well-known {
+          allow all;
+        }
+        location ~* /(?:uploads|files)/.*\.php$$ {
+          deny all;
+        }
+        location = /robots.txt {
+          allow all;
+          log_not_found off;
+          access_log off;
+        }
+      root_location_options: |
+        try_files $$uri $$uri/ /index.php$$uri?$$args
+      fpm_options: |
+        port:
+        options:```
 ## Ejemplo de uso
 
 docker-compose.yml
