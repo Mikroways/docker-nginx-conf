@@ -14,7 +14,7 @@ server {
   {{if exists "/self/service/metadata/nginx-conf/server_custom_options"}}{{getv "/self/service/metadata/nginx-conf/server_custom_options"}}{{end}}
 
   location / {
-    {{if exists "/self/service/metadata/nginx-conf/root_location_options"}}{{getv "/self/service/metadata/nginx-conf/root_location_options"}}{{else}}try_files $uri{{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}} @app{{end}};{{end}}
+    {{if exists "/self/service/metadata/nginx-conf/root_location_options"}}{{getv "/self/service/metadata/nginx-conf/root_location_options"}}{{else}}try_files $uri $uri/{{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}} @app{{end}};{{end}}
   }
 
   {{if exists "/self/service/metadata/nginx-conf/fpm_options"}}
