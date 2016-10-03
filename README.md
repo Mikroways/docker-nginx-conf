@@ -66,7 +66,22 @@ location ~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?$
 Dentro de esta se pueden definir otras dos opciones:
 ** options: se agregan opciones a las ya definidas por defecto
 ** port: puerto fpm
-
+contendido de fpm_options por defecto:
+```yml
+{{if exists "/self/service/metadata/nginx-conf/fpm_options"}}
+  location ~ [^/]\.php(/|$) {
+    fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+    if (!-f $document_root$fastcgi_script_name) {
+      return 404;
+    }
+    include fastcgi_params;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param SERVER_PORT $http_x_forwarded_port;
+    fastcgi_pass {{if exists "/self/service/metadata/nginx-conf/server"}}{{getv "/self/service/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/self/service/metadata/nginx-conf/fpm_options/port"}}{{getv "/self/service/metadata/nginx-conf/fpm_options/port"}}{{else}}{{9000}}{{end}};
+    {{getv "/self/service/metadata/nginx-conf/fpm_options/options"}}
+  {{end}}
+```
 ## Ejemplo de uso
 
 docker-compose.yml
