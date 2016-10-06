@@ -2,6 +2,5 @@
 src="nginx.conf.tmpl"
 dest="/etc/nginx/conf.d/nginx.conf"
 keys = [
-  "/services/nginx",
-  "NGINX"
+  "/self"
 ]

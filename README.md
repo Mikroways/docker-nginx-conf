@@ -28,7 +28,6 @@ nginx:
       upstream_location_options: |
       static_files_regexp_location: \\.(icoco|css|gif|jpe?g|png|js)(\?[0-9]+)$$
 ```
-
 Los campos a partir de metadata son los que nos importan.
 Los campos posibles de editar son los siguientes:
 * root: campo que indica el document root de nginx. Campo opcional, por defecto /usr/share/nginx/html
@@ -63,7 +62,36 @@ Los campos posibles de editar son los siguientes:
 ```yml
 location ~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?$
 ```
-
+* fpm_options: este campo define "location ~ [^/]\.php(/|$)".Si este campo no es especificado no se creara este location"
+Dentro de esta se pueden definir otras dos opciones:
+  * options: se agregan opciones a las ya definidas por defecto
+  * port: puerto fpm
+contendido de fpm_options por defecto:
+```yml
+metadata:
+    nginx-conf:
+      root: /var/www/html;    
+      server_custom_options: |
+        listen 8060;
+        keepalive_timeout 10;
+        client_max_body_size 250m;
+        index index.php;
+        location ~ /.well-known {
+          allow all;
+        }
+        location ~* /(?:uploads|files)/.*\.php$$ {
+          deny all;
+        }
+        location = /robots.txt {
+          allow all;
+          log_not_found off;
+          access_log off;
+        }
+      root_location_options: |
+        try_files $$uri $$uri/ /index.php$$uri?$$args
+      fpm_options: |
+        port:
+        options:```
 ## Ejemplo de uso
 
 docker-compose.yml
