@@ -29,8 +29,8 @@ server {
     fastcgi_param SERVER_PORT $http_x_forwarded_port;
     fastcgi_pass {{if exists "/self/service/metadata/nginx-conf/server"}}{{getv "/self/service/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/self/service/metadata/nginx-conf/fpm_options/port"}}{{getv "/self/service/metadata/nginx-conf/fpm_options/port"}}{{else}}{{9000}}{{end}};
     {{if exists "/self/service/metadata/nginx-conf/fpm_options/options"}}{{getv "/self/service/metadata/nginx-conf/fpm_options/options"}}{{end}}
-  {{end}}
   }
+  {{end}}
 
 {{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}}
   location @app {
