@@ -100,7 +100,7 @@ docker-compose.yml
 ```yml
   nginx-conf:
     container_name: nginx-conf
-    image: mikroways/docker-wordpress-nginx
+    image: mikroways/docker-nginx-conf:v1.0.1
     labels:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.pull_image: always
@@ -116,39 +116,32 @@ docker-compose.yml
       io.rancher.container.pull_image: always
 ```
 
+Configuración de rancher-compose de manera que genere una configuracion de Nginx con un upstream determinado y sin el location que sirve archivos estaticos:
+
 rancher-compose.yml
 ```yml
-  nginx:
+
+nginx:
   scale: 1
+  health_check:
+    port: 80
+    interval: 2000
+    unhealthy_threshold: 3
+    strategy: recreate
+    response_timeout: 2000
+    healthy_threshold: 2
   metadata:
     nginx-conf:
-      root: /var/www/html;
+      server: www.mikroways.net
       upstream:
-        port: 9000
+        active:
+        port: 3000
       server_custom_options: |
+        listen 80;
         keepalive_timeout 10;
-        index index.php;
-        location = /robots.txt {
-          allow all;
-          log_not_found off;
-            access_log off;
-          }
-
-          location ~ /\. {
-            deny all;
-          }
-        location ~ [^/]\.php(/|$$) {
-          fastcgi_split_path_info ^(.+?\.php)(/.*)$$;
-          if (!-f $$document_root$$fastcgi_script_name) {
-            return 404;
-          }
-          include fastcgi_params;
-          fastcgi_index index.php;
-          fastcgi_param SCRIPT_FILENAME $$document_root$$fastcgi_script_name;
-          fastcgi_param SERVER_PORT $$http_x_forwarded_port;
-          fastcgi_pass 127.0.0.1:9000;
-        }
-
+        client_max_body_size 250m;
+        index index.html;
       root_location_options: |
         try_files $$uri $$uri/ /index.php$$uri?$$args;
+      no_static_files_location:
 ```
