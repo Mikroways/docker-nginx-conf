@@ -30,8 +30,11 @@ nginx:
 ```
 Los campos a partir de metadata son los que nos importan.
 Los campos posibles de editar son los siguientes:
-* root: campo que indica el document root de nginx. Campo opcional, por defecto /usr/share/nginx/html
-* port: campo que indica el puerto del server
+* server: nombre para un upstream
+* upstream: dentro de este se puede definir 
+      **active**: si se define este campo se crea un upstream, con el nombre de **server**. Por defecto si no esta definido server: 127.0.0.1
+      **port**: este define el puerto del upstream, por defecto 8080
+* root: campo que indica el document root de nginx. Campo opcional, si no se indica este campo con un valor esta opción no es agregada
 * server_custom_options: en este campo se pueden definir diferentes configuraciones que se deseen agregar.
 * root_location_options: este campo agregara, si es que se define, dentro de "location /" las opciones indicadas
 ```yml
@@ -39,11 +42,8 @@ Los campos posibles de editar son los siguientes:
         <<<contenido de root_location_options>>>
     }
 ```
-* upstream_location_options: este campo define "location @app", se agregaran otras opciones a las ya definidas. Si este campo no es especificado no se creara este location y tampoco se creara "upstream @app {}"
+* upstream_location_options: este campo define "location @app", se agregaran otras opciones a las ya definidas. Si este campo no es especificado no se creara este location
 ```yml
-  upstream app{
-    server 127.0.0.1:<<<puerto especificado>>>;
-  }
   server {
     .
     .
@@ -58,6 +58,7 @@ Los campos posibles de editar son los siguientes:
     .
   }  
 ```
+El location para servir los archivos estaticos por defecto es agregado y se puede editar la expresion regular como se indica. Este location puede eliminarse si se define la opcion **no_static_files_location**
 * static_files_regexp_location: campo para editar la expresion regular que sirve el contenido estatico. Por defecto:
 ```yml
 location ~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?$
@@ -91,18 +92,19 @@ metadata:
         try_files $$uri $$uri/ /index.php$$uri?$$args
       fpm_options: |
         port:
-        options:```
+        options:
+```
 ## Ejemplo de uso
 
 docker-compose.yml
 ```yml
   nginx-conf:
-  container_name: nginx-conf
-  image: mikroways/docker-wordpress-nginx
-  labels:
-    io.rancher.container.hostname_override: container_name
-    io.rancher.container.pull_image: always
-  command: ["--backend", "rancher", "--prefix", "/2015-07-25"]
+    container_name: nginx-conf
+    image: mikroways/docker-wordpress-nginx
+    labels:
+      io.rancher.container.hostname_override: container_name
+      io.rancher.container.pull_image: always
+    command: ["--backend", "rancher", "--prefix", "/2015-07-25"]
   nginx:
     container_name: nginx
     image: nginx
