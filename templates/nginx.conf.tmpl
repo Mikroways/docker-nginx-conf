@@ -1,12 +1,11 @@
-#Metadata debe ser definida en el contenedor nginx-conf
-{{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}}
+{{if exists "/self/service/metadata/nginx-conf/upstream"}}
 upstream app {
   server {{if exists "/self/service/metadata/nginx-conf/server"}}{{getv "/self/service/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/self/service/metadata/nginx-conf/upstream/port"}}{{getv "/self/service/metadata/nginx-conf/upstream/port"}}{{else}}8080{{end}};
 }
 {{end}}
 server {
   server_name _;
-  root {{if exists "/self/service/metadata/nginx-conf/root"}}{{getv "/self/service/metadata/nginx-conf/root"}}{{else}}/usr/share/nginx/html{{end}};
+  {{if exists "/self/service/metadata/nginx-conf/root"}}root {{getv "/self/service/metadata/nginx-conf/root"}}{{end}};
 
   access_log /var/log/nginx/access.log;
   error_log  /var/log/nginx/error.log;
@@ -41,13 +40,14 @@ server {
     {{getv "/self/service/metadata/nginx-conf/upstream_location_options"}}
   }
 {{end}}
- 
+
+{{if not (exists "/self/service/metadata/nginx-conf/no_static_files_location")}}
   location {{if exists "/self/service/metadata/nginx-conf/static_files_regexp_location"}}{{getv "/self/service/metadata/nginx-conf/static_files_regexp_location"}}{{else}}~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?${{end}} {
-    #try_files $uri
     {{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}}try_files $uri @app;{{end}}
     access_log off;
     log_not_found off;
     expires max;
     break ;
   }
+{{end}}
 }
