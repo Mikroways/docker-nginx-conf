@@ -5,7 +5,7 @@ upstream app {
 {{end}}
 server {
   server_name _;
-  {{if exists "/self/service/metadata/nginx-conf/root"}}root {{getv "/self/service/metadata/nginx-conf/root"}}{{end}};
+  {{if exists "/self/service/metadata/nginx-conf/root"}}root {{getv "/self/service/metadata/nginx-conf/root"}};{{end}}
 
   access_log /var/log/nginx/access.log;
   error_log  /var/log/nginx/error.log;
