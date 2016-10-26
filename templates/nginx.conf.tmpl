@@ -1,4 +1,4 @@
-{{if exists "/self/service/metadata/nginx-conf/upstream"}}
+{{if exists "/self/service/metadata/nginx-conf/upstream/active"}}
 upstream app {
   server {{if exists "/self/service/metadata/nginx-conf/server"}}{{getv "/self/service/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/self/service/metadata/nginx-conf/upstream/port"}}{{getv "/self/service/metadata/nginx-conf/upstream/port"}}{{else}}8080{{end}};
 }
