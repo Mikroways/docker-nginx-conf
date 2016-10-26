@@ -32,7 +32,9 @@ Los campos a partir de metadata son los que nos importan.
 Los campos posibles de editar son los siguientes:
 * server: nombre para un upstream
 * upstream: dentro de este se puede definir 
+      
       **active**: si se define este campo se crea un upstream, con el nombre de **server**. Por defecto si no esta definido server: 127.0.0.1
+      
       **port**: este define el puerto del upstream, por defecto 8080
 * root: campo que indica el document root de nginx. Campo opcional, si no se indica este campo con un valor esta opción no es agregada
 * server_custom_options: en este campo se pueden definir diferentes configuraciones que se deseen agregar.
