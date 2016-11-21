@@ -1,22 +1,36 @@
-{{if exists "/self/service/metadata/nginx-conf/upstream/active"}}
+{{ $server := "/self/service/metadata/nginx-conf/server"}}
+{{ $upstream_port := "/self/service/metadata/nginx-conf/upstream/port" }}
+{{ $document_root := "/self/service/metadata/nginx-conf/root" }}
+{{ $server_custom_options := "/self/service/metadata/nginx-conf/server_custom_options" }}
+{{ $root_location_options := "/self/service/metadata/nginx-conf/root_location_options" }}
+{{ $fpm := "/self/service/metadata/nginx-conf/fpm_options" }}
+{{ $fpm_options := "/self/service/metadata/nginx-conf/fpm_options/options" }}
+{{ $fpm_port := "/self/service/metadata/nginx-conf/fpm_options/port" }}
+{{ $upstream_location_options := "/self/service/metadata/nginx-conf/upstream_location_options"}}
+{{ $no_static_files := "/self/service/metadata/nginx-conf/no_static_files_location"}}
+{{ $regexp_static_files := "/self/service/metadata/nginx-conf/static_files_regexp_location"}}
+
+
+{{if exists $upstream_port}}
 upstream app {
-  server {{if exists "/self/service/metadata/nginx-conf/server"}}{{getv "/self/service/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/self/service/metadata/nginx-conf/upstream/port"}}{{getv "/self/service/metadata/nginx-conf/upstream/port"}}{{else}}8080{{end}};
+  server {{if exists $server}}{{getv $server}}{{else}}127.0.0.1{{end}}:{{getv $upstream_port}};
 }
 {{end}}
+
 server {
   server_name _;
-  {{if exists "/self/service/metadata/nginx-conf/root"}}root {{getv "/self/service/metadata/nginx-conf/root"}};{{end}}
+  {{if exists $document_root}}root {{getv $document_root}};{{end}}
 
   access_log /var/log/nginx/access.log;
   error_log  /var/log/nginx/error.log;
   
-  {{if exists "/self/service/metadata/nginx-conf/server_custom_options"}}{{getv "/self/service/metadata/nginx-conf/server_custom_options"}}{{end}}
+  {{if exists $server_custom_options}}{{getv $server_custom_options}}{{end}}
 
   location / {
-    {{if exists "/self/service/metadata/nginx-conf/root_location_options"}}{{getv "/self/service/metadata/nginx-conf/root_location_options"}}{{else}}try_files $uri $uri/{{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}} @app{{end}};{{end}}
+    {{if exists $root_location_options}}{{getv $root_location_options}}{{else}}try_files $uri $uri/{{if exists $upstream_port}} @app{{end}};{{end}}
   }
 
-  {{if exists "/self/service/metadata/nginx-conf/fpm_options"}}
+  {{if exists $fpm}}
   location ~ [^/]\.php(/|$) {
     fastcgi_split_path_info ^(.+?\.php)(/.*)$;
     if (!-f $document_root$fastcgi_script_name) {
@@ -26,24 +40,24 @@ server {
     fastcgi_index index.php;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     fastcgi_param SERVER_PORT $http_x_forwarded_port;
-    fastcgi_pass {{if exists "/self/service/metadata/nginx-conf/server"}}{{getv "/self/service/metadata/nginx-conf/server"}}{{else}}127.0.0.1{{end}}:{{if exists "/self/service/metadata/nginx-conf/fpm_options/port"}}{{getv "/self/service/metadata/nginx-conf/fpm_options/port"}}{{else}}{{9000}}{{end}};
-    {{if exists "/self/service/metadata/nginx-conf/fpm_options/options"}}{{getv "/self/service/metadata/nginx-conf/fpm_options/options"}}{{end}}
+    fastcgi_pass {{if exists $server}}{{getv $server}}{{else}}127.0.0.1{{end}}:{{if exists $fpm_port}}{{getv $fpm_port}}{{else}}{{9000}}{{end}};
+    {{if exists $fpm_options}}{{getv $fpm_options}}{{end}}
   }
   {{end}}
 
-{{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}}
+{{if exists $upstream_location_options}}
   location @app {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
     proxy_pass http://app;
-    {{getv "/self/service/metadata/nginx-conf/upstream_location_options"}}
+    {{getv $upstream_location_options}}
   }
 {{end}}
 
-{{if not (exists "/self/service/metadata/nginx-conf/no_static_files_location")}}
-  location {{if exists "/self/service/metadata/nginx-conf/static_files_regexp_location"}}{{getv "/self/service/metadata/nginx-conf/static_files_regexp_location"}}{{else}}~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?${{end}} {
-    {{if exists "/self/service/metadata/nginx-conf/upstream_location_options"}}try_files $uri @app;{{end}}
+{{if not (exists $no_static_files)}}
+  location {{if exists $regexp_static_files}}{{getv $regexp_static_files}}{{else}}~* \.(ico|css|gif|jpe?g|png|js)(\?[0-9]+)?${{end}} {
+    {{if exists $upstream_location_options}}try_files $uri @app;{{end}}
     access_log off;
     log_not_found off;
     expires max;
