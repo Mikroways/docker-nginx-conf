@@ -10,9 +10,6 @@
 {{ $no_static_files := "/self/service/metadata/nginx-conf/no_static_files_location"}}
 {{ $regexp_static_files := "/self/service/metadata/nginx-conf/static_files_regexp_location"}}
 
-#pruebA : valor: {{ getv "/self/service/metadata/nginx-conf/server" "default_value"}}
-
-
 
 {{if exists $upstream_port}}
 upstream app {
