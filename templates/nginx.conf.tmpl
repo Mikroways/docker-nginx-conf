@@ -9,6 +9,11 @@
 {{ $upstream_location_options := "/self/service/metadata/nginx-conf/upstream_location_options"}}
 {{ $no_static_files := "/self/service/metadata/nginx-conf/no_static_files_location"}}
 {{ $regexp_static_files := "/self/service/metadata/nginx-conf/static_files_regexp_location"}}
+
+#pruebA : valor: {{ getv "/self/service/metadata/nginx-conf/server" "default_value"}}
+
+
+
 {{if exists $upstream_port}}
 upstream app {
   server {{if exists $server}}{{getv $server}}{{else}}127.0.0.1{{end}}:{{getv $upstream_port}};
